@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Configure Keycloak :: OpenShell Workload Identity with SPIFFE and SPIRE</title>
+    <link rel="prev" href="register-sandbox-identities.html">
+    <link rel="next" href="protect-target-api.html">
+    <meta name="generator" content="Antora 3.2.1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&family=Red+Hat+Mono:wght@400;700&family=Red+Hat+Text:wght@400;700&display=swap">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+  </head>
+  <body class="article">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span class="navbar-item navbar-logo">
+        <img src="../../_/img/logo-demo-platform.svg" alt="Red Hat Demo Platform" class="navbar-logo-img">
+      </span>
+      <a class="navbar-item site-title" target="_blank" href="../..">OpenShell Workload Identity with SPIFFE and SPIRE</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guide" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">OpenShell Workload Identity with SPIFFE and SPIRE</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Overview</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Start here</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../overview/how-it-works.html">How it works</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../overview/trust-model.html">Trust model</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Administrator guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Administrator overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="install-workload-identity.html">Install workload identity</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="install-keycloak.html">Install Keycloak</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configure-openshell.html">Configure OpenShell</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="register-sandbox-identities.html">Register sandbox identities</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="configure-keycloak.html">Configure Keycloak</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="protect-target-api.html">Protect the target API</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="verify-end-to-end.html">Verify the setup end to end</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">User guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../user/index.html">User overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../user/token-grant-provider.html">Get short-lived tokens for your API</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Reference</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../reference/configuration.html">Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../reference/limitations.html">Known limitations</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../reference/in-flight-changes.html">In-flight changes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">OpenShell Workload Identity with SPIFFE and SPIRE</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">default</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article" id="content">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">OpenShell Workload Identity with SPIFFE and SPIRE</a></li>
+    <li>Administrator guide</li>
+    <li><a href="index.html">Administrator overview</a></li>
+    <li><a href="configure-keycloak.html">Configure Keycloak</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Configure Keycloak</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Keycloak accepts a sandbox&#8217;s JWT-SVID only when it trusts the SPIRE signing keys and maps the SPIFFE ID in the SVID to exactly one client.
+This page creates a realm with a SPIFFE identity provider for the signing keys and describes the client that each sandbox needs.
+<a href="../overview/how-it-works.html" class="xref page">How it works</a> shows where these checks happen in a token grant.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This setup is only known to work with Keycloak.
+Red Hat build of Keycloak is the only token service it was verified with.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="how-keycloak-accepts-a-jwt-svid"><a class="anchor" href="#how-keycloak-accepts-a-jwt-svid"></a>How Keycloak accepts a JWT-SVID</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The supervisor sends its JWT-SVID as the client assertion of a <code>client_credentials</code> request, without a client ID.
+Keycloak handles the request in three steps.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Find the client.</strong>
+For the assertion type <code>urn:ietf:params:oauth:client-assertion-type:jwt-spiffe</code>, Keycloak looks up the enabled client whose attribute <code>jwt.credential.sub</code> equals the <code>sub</code> claim, the sandbox SPIFFE ID.
+If more than one enabled client matches, the lookup fails.</p>
+</li>
+<li>
+<p><strong>Find the identity provider.</strong>
+The client&#8217;s attribute <code>jwt.credential.issuer</code> holds the alias of the SPIFFE identity provider that verifies the assertion.
+Keycloak verifies the assertion only for a client whose authenticator type is <code>federated-jwt</code>.</p>
+</li>
+<li>
+<p><strong>Verify the JWT-SVID.</strong>
+The identity provider rejects a <code>sub</code> outside its trust domain.
+It fetches the signing keys with an HTTP GET on its bundle endpoint.
+It accepts exactly one audience, the realm issuer <code><a href="https://&lt;keycloak-host&gt;/realms/&lt;realm&gt" class="bare">https://&lt;keycloak-host&gt;/realms/&lt;realm&gt</a>;</code>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The <code>client_credentials</code> grant also requires a confidential client with service accounts enabled.
+Keycloak issues the token for the client&#8217;s service account user, whose name is <code>service-account-</code> followed by the client ID.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="before-you-begin"><a class="anchor" href="#before-you-begin"></a>Before you begin</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Keycloak runs as described in <a href="install-keycloak.html" class="xref page">Install Keycloak</a>, with the <code>Keycloak</code> resource <code>keycloak</code> in the namespace <code>keycloak</code> and the host name <code>&lt;keycloak-host&gt;</code>.</p>
+</li>
+<li>
+<p>The SPIRE OIDC discovery provider serves <code><a href="https://oidc-discovery.&lt;apps-domain&gt" class="bare">https://oidc-discovery.&lt;apps-domain&gt</a>;</code> as described in <a href="install-workload-identity.html" class="xref page">Install workload identity</a>.
+<code>&lt;trust-domain&gt;</code> is the trust domain configured there.</p>
+</li>
+<li>
+<p>Sandbox supervisors receive the SPIFFE ID <code>spiffe://&lt;trust-domain&gt;/openshell/sandbox/&lt;sandbox-id&gt;</code> as described in <a href="register-sandbox-identities.html" class="xref page">Register sandbox identities</a>.</p>
+</li>
+<li>
+<p>You choose <code>&lt;realm&gt;</code>, the name of the realm, for example <code>openshell</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="create-the-realm-and-the-spiffe-identity-provider"><a class="anchor" href="#create-the-realm-and-the-spiffe-identity-provider"></a>Create the realm and the SPIFFE identity provider</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A <code>KeycloakRealmImport</code> resource creates a realm from a realm representation.
+The realm on this page holds one SPIFFE identity provider, which trusts JWT-SVIDs from the trust domain and reads their signing keys from the SPIRE OIDC discovery provider.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create the <code>KeycloakRealmImport</code>.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f - &lt;&lt;'EOF'
+apiVersion: k8s.keycloak.org/v2beta1
+kind: KeycloakRealmImport
+metadata:
+  name: openshell-realm
+  namespace: keycloak
+spec:
+  keycloakCRName: keycloak
+  realm:
+    realm: &lt;realm&gt;
+    enabled: true
+    identityProviders:
+      - alias: spiffe
+        providerId: spiffe
+        enabled: true
+        config:
+          trustDomain: spiffe://&lt;trust-domain&gt;
+          bundleEndpoint: https://oidc-discovery.&lt;apps-domain&gt;/keys
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>keycloakCRName</code> names the <code>Keycloak</code> resource, which must be in the same namespace.
+<code>realm</code> takes a realm representation.
+<code>providerId: spiffe</code> selects the SPIFFE identity provider.
+<code>alias</code> is the name that each client references in its <code>jwt.credential.issuer</code> attribute.
+<code>trustDomain</code> is the trust domain with the <code>spiffe://</code> prefix and no trailing slash, because Keycloak accepts only a <code>sub</code> that starts with this value followed by <code>/</code>.
+Keycloak also rejects a trust domain that is not <code>spiffe://</code> followed only by lowercase letters, digits, dots, hyphens, and underscores, so a trailing slash fails validation.
+<code>bundleEndpoint</code> is the HTTPS URL of a SPIFFE bundle endpoint or of an OpenID Connect JWKS endpoint.
+This page uses the <code>/keys</code> endpoint of the SPIRE OIDC discovery provider, which serves the JSON Web Key Set for JWT validation.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Keycloak must trust the certificate that the bundle endpoint presents.
+Its truststore holds the Java default truststore, the Kubernetes service account CA and the OpenShift service CA when they are mounted, and the certificates added through <code>spec.truststores</code> of the <code>Keycloak</code> resource.
+If no CA in that truststore issued the bundle endpoint&#8217;s certificate, add the issuing CA through <code>spec.truststores</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Wait for the import.</p>
+<div class="paragraph">
+<p>Check: the condition <code>Done</code> is <code>True</code> and the condition <code>HasErrors</code> is <code>False</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get keycloakrealmimport openshell-realm -n keycloak -o jsonpath='{range .status.conditions[*]}{.type}={.status}{" "}{end}'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check the realm discovery document.</p>
+<div class="paragraph">
+<p>Check: the <code>token_endpoint</code> is <code><a href="https://&lt;keycloak-host&gt;/realms/&lt;realm&gt;/protocol/openid-connect/token" class="bare">https://&lt;keycloak-host&gt;/realms/&lt;realm&gt;/protocol/openid-connect/token</a></code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -sS "https://&lt;keycloak-host&gt;/realms/&lt;realm&gt;/.well-known/openid-configuration"</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The import only creates realms.
+It does not overwrite an existing realm with the same name, and it does not update or delete a realm.
+The operator documentation recommends deleting the <code>KeycloakRealmImport</code> after the import, which removes its Job and Pod.
+Delete it only after both checks pass.
+The import status check then finds no resource, and the discovery document check remains the durable check of the realm.
+Only namespace administrators should be able to create or edit <code>KeycloakRealmImport</code> resources.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="create-a-client-for-each-sandbox"><a class="anchor" href="#create-a-client-for-each-sandbox"></a>Create a client for each sandbox</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Keycloak maps each SPIFFE ID to one client, and each sandbox has its own SPIFFE ID.
+A sandbox gets no token until its client exists.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Every sandbox needs its own client in the realm, with its SPIFFE ID in <code>jwt.credential.sub</code>.
+You must automate creating that client for each new sandbox.
+Keycloak documents that each client must have a unique SPIFFE ID per realm.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Create the client through the Admin REST API or the Admin Console with the following client representation.
+Replace <code>&lt;sandbox-id&gt;</code> with the ID of the sandbox.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "clientId": "sandbox-&lt;sandbox-id&gt;",
+  "publicClient": false,
+  "serviceAccountsEnabled": true,
+  "standardFlowEnabled": false,
+  "directAccessGrantsEnabled": false,
+  "clientAuthenticatorType": "federated-jwt",
+  "attributes": {
+    "jwt.credential.issuer": "spiffe",
+    "jwt.credential.sub": "spiffe://&lt;trust-domain&gt;/openshell/sandbox/&lt;sandbox-id&gt;"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>clientId</code> is a name you choose, and Keycloak names the service account user <code>service-account-sandbox-&lt;sandbox-id&gt;</code> after it.
+<code>publicClient: false</code> and <code>serviceAccountsEnabled: true</code> let the client use the <code>client_credentials</code> grant.
+<code>standardFlowEnabled: false</code> and <code>directAccessGrantsEnabled: false</code> turn off the Authorization Code Flow and Direct Access Grants.
+<code>clientAuthenticatorType: federated-jwt</code> authenticates the client with an assertion that an identity provider verifies.
+<code>jwt.credential.issuer</code> is the alias of the SPIFFE identity provider.
+<code>jwt.credential.sub</code> is the sandbox SPIFFE ID.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="values-for-the-provider-profile"><a class="anchor" href="#values-for-the-provider-profile"></a>Values for the provider profile</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A provider profile that obtains tokens from this realm uses these token grant values.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>token_endpoint</code></dt>
+<dd>
+<p><code><a href="https://&lt;keycloak-host&gt;/realms/&lt;realm&gt;/protocol/openid-connect/token" class="bare">https://&lt;keycloak-host&gt;/realms/&lt;realm&gt;/protocol/openid-connect/token</a></code>.</p>
+</dd>
+<dt class="hdlist1"><code>client_assertion_type</code></dt>
+<dd>
+<p><code>urn:ietf:params:oauth:client-assertion-type:jwt-spiffe</code>.
+OpenShell defaults to <code>urn:ietf:params:oauth:client-assertion-type:jwt-bearer</code>, so the profile must set this value.</p>
+</dd>
+<dt class="hdlist1"><code>jwt_svid_audience</code></dt>
+<dd>
+<p>Can stay unset.
+For a token endpoint with <code>/realms/&lt;realm&gt;</code> in its path, the supervisor derives the audience <code><a href="https://&lt;keycloak-host&gt;/realms/&lt;realm&gt" class="bare">https://&lt;keycloak-host&gt;/realms/&lt;realm&gt</a>;</code>, which has the same form as the realm issuer.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="gateway-client-for-token-exchange"><a class="anchor" href="#gateway-client-for-token-exchange"></a>Gateway client for token exchange</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section is outside the verified path of this guide, which covers the <code>client_credentials</code> grant type.</p>
+</div>
+<div class="paragraph">
+<p>With the <code>token_exchange</code> grant type, the gateway sends its own JWT-SVID as the client assertion to the same token endpoint.
+Keycloak looks up the client for the gateway&#8217;s SPIFFE ID in the same way as for a sandbox, so the realm also needs a client whose <code>jwt.credential.sub</code> is the gateway&#8217;s SPIFFE ID.
+<a href="register-sandbox-identities.html" class="xref page">Register sandbox identities</a> describes what the gateway identity requires.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="register-sandbox-identities.html" class="query-params-link">Register sandbox identities</a></span>
+  <span class="next"><a href="protect-target-api.html" class="query-params-link">Protect the target API</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script defer src="../../_/js/vendor/clipboard.js"></script>
+<script defer src="../../_/js/site.js"></script>
+<script defer src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

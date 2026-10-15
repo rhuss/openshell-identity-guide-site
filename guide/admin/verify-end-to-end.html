@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Verify the setup end to end :: OpenShell Workload Identity with SPIFFE and SPIRE</title>
+    <link rel="prev" href="protect-target-api.html">
+    <link rel="next" href="../user/index.html">
+    <meta name="generator" content="Antora 3.2.1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&family=Red+Hat+Mono:wght@400;700&family=Red+Hat+Text:wght@400;700&display=swap">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+  </head>
+  <body class="article">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span class="navbar-item navbar-logo">
+        <img src="../../_/img/logo-demo-platform.svg" alt="Red Hat Demo Platform" class="navbar-logo-img">
+      </span>
+      <a class="navbar-item site-title" target="_blank" href="../..">OpenShell Workload Identity with SPIFFE and SPIRE</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="guide" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">OpenShell Workload Identity with SPIFFE and SPIRE</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Overview</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Start here</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../overview/how-it-works.html">How it works</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../overview/trust-model.html">Trust model</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Administrator guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Administrator overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="install-workload-identity.html">Install workload identity</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="install-keycloak.html">Install Keycloak</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configure-openshell.html">Configure OpenShell</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="register-sandbox-identities.html">Register sandbox identities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configure-keycloak.html">Configure Keycloak</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="protect-target-api.html">Protect the target API</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="verify-end-to-end.html">Verify the setup end to end</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">User guide</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../user/index.html">User overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../user/token-grant-provider.html">Get short-lived tokens for your API</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Reference</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../reference/configuration.html">Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../reference/limitations.html">Known limitations</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../reference/in-flight-changes.html">In-flight changes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">OpenShell Workload Identity with SPIFFE and SPIRE</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">default</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article" id="content">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">OpenShell Workload Identity with SPIFFE and SPIRE</a></li>
+    <li>Administrator guide</li>
+    <li><a href="index.html">Administrator overview</a></li>
+    <li><a href="verify-end-to-end.html">Verify the setup end to end</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Verify the setup end to end</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>One request from a sandbox exercises the whole chain.
+The supervisor fetches a JWT-SVID from the local Workload API, Keycloak accepts it as a client assertion and returns an access token, and the supervisor injects that token into the request.
+When the agent&#8217;s request succeeds although the sandbox holds no credential, every part of the setup works.
+This page uses the Keycloak <code>userinfo</code> endpoint as the target API.
+The endpoint is protected by a bearer token and returns claims about the user that the token was issued for.
+<a href="../overview/how-it-works.html" class="xref page">How it works</a> shows the chain step by step.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="before-you-begin"><a class="anchor" href="#before-you-begin"></a>Before you begin</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>You completed the pages from <a href="install-workload-identity.html" class="xref page">Install workload identity</a> to <a href="configure-keycloak.html" class="xref page">Configure Keycloak</a>.</p>
+</li>
+<li>
+<p>Keycloak serves HTTP as described in <a href="install-keycloak.html" class="xref page">Install Keycloak</a>.
+The operator names its Service <code>keycloak-service</code> and gives it port 8080 for HTTP.</p>
+</li>
+<li>
+<p>The realm is <code>openshell</code>.
+If you chose another realm name, replace <code>openshell</code> in the URLs on this page.</p>
+</li>
+<li>
+<p>The <code>openshell</code> CLI operates on your active gateway.
+Add <code>-g &lt;gateway&gt;</code> to a command to select another gateway.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="create-the-provider"><a class="anchor" href="#create-the-provider"></a>Create the provider</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A provider profile tells the supervisor where to obtain a token and which requests receive it.
+You attach a provider created from the profile to the sandbox.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Write the provider profile to a file.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &gt; keycloak-token-grant-profile.yaml &lt;&lt;'EOF'
+id: keycloak-token-grant
+display_name: Keycloak SPIFFE token grant
+category: other
+credentials:
+  - name: access_token
+    required: false
+    auth_style: bearer
+    header_name: Authorization
+    token_grant:
+      token_endpoint: https://&lt;keycloak-host&gt;/realms/openshell/protocol/openid-connect/token
+      client_assertion_type: urn:ietf:params:oauth:client-assertion-type:jwt-spiffe
+      scopes: [openid]
+endpoints:
+  - host: keycloak-service.keycloak.svc.cluster.local
+    port: 8080
+    protocol: rest
+    access: read-only
+    enforcement: enforce
+binaries:
+  - /usr/bin/curl
+  - /usr/local/bin/curl
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>id</code> is the value that <code>openshell provider create --type</code> takes.
+<code>category</code> is informational.
+<code>required: false</code> makes the credential optional, so the provider needs no stored value for it.
+<code>auth_style: bearer</code> with <code>header_name: Authorization</code> injects the token as <code>Authorization: Bearer &lt;token&gt;</code>.
+<code>token_grant</code> holds the values from <a href="configure-keycloak.html#values-for-the-provider-profile" class="xref page">Values for the provider profile</a>, with <code>jwt_svid_audience</code> unset.
+<code>scopes: [openid]</code> requests the <code>openid</code> scope, because the <code>userinfo</code> endpoint rejects a token without it.
+<code>endpoints</code> names the Keycloak Service inside the cluster, and the supervisor injects the token only into requests to this endpoint.
+<code>protocol: rest</code> turns on request inspection.
+<code>access: read-only</code> allows <code>GET</code>, <code>HEAD</code>, and <code>OPTIONS</code>, and <code>enforcement: enforce</code> blocks requests that break these rules.
+<code>binaries</code> lists the executables that may reach the endpoint.</p>
+</div>
+</li>
+<li>
+<p>Lint the profile before you import it.
+Lint asks the gateway to check the profile without storing it.
+It reports an error when the workspace already holds a profile with this <code>id</code>.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshell profile lint -f keycloak-token-grant-profile.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Import the profile into the current workspace.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshell profile import -f keycloak-token-grant-profile.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create the provider.
+Create providers for token-grant-only profiles with <code>--runtime-credentials</code>, as the OpenShell documentation instructs.
+The flag records the provider without stored credentials and makes explicit that the credential is resolved at runtime.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshell provider create --name keycloak-token-grant --type keycloak-token-grant --runtime-credentials</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check the provider.</p>
+<div class="paragraph">
+<p>Check: the provider <code>keycloak-token-grant</code> has the type <code>keycloak-token-grant</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshell provider get keycloak-token-grant</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="create-the-sandbox"><a class="anchor" href="#create-the-sandbox"></a>Create the sandbox</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The sandbox runs <code>curl</code>, so its image must contain <code>curl</code>.
+This page uses the community base image <code>ghcr.io/nvidia/openshell-community/sandboxes/base:latest</code>.
+OpenShell uses a policy that ships in an image only when the sandbox has no policy of its own, and a sandbox with an invalid image policy does not start.
+The command on this page passes its own policy with <code>--policy</code>.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Write the sandbox policy to a file.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &gt; sandbox-policy.yaml &lt;&lt;'EOF'
+version: 1
+
+filesystem_policy:
+  include_workdir: true
+  read_only:
+    - /usr
+    - /lib
+    - /proc
+    - /dev/urandom
+    - /app
+    - /etc
+    - /var/log
+  read_write:
+    - /sandbox
+    - /tmp
+    - /dev/null
+
+landlock:
+  compatibility: best_effort
+
+process:
+  run_as_user: sandbox
+  run_as_group: sandbox
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The policy sets only filesystem, Landlock, and process settings.
+<code>include_workdir</code>, <code>read_only</code>, and <code>read_write</code> set the paths the workload can read and write, and <code>process</code> names the user and group of the workload.
+With <code>compatibility: best_effort</code>, the sandbox runs without the filesystem rules and logs a high-severity finding when none of the listed paths can be applied or Landlock fails to enforce the rules.
+It has no <code>network_policies</code>, because the attached provider adds the network rule for the Keycloak endpoint to the effective policy.</p>
+</div>
+</li>
+<li>
+<p>Create the sandbox from the image, with the provider attached.
+<code>--detach</code> keeps the CLI from attaching to the sandbox&#8217;s main process.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshell sandbox create --name idtest --provider keycloak-token-grant --from ghcr.io/nvidia/openshell-community/sandboxes/base:latest --policy sandbox-policy.yaml --detach</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Wait until the sandbox is ready, and note its ID.
+Repeat the command until the phase is <code>Ready</code>.
+The <code>Id</code> line shows the sandbox ID, a UUID, which this page calls <code>&lt;sandbox-id&gt;</code>.</p>
+<div class="paragraph">
+<p>Check: the phase is <code>Ready</code>, and the <code>Id</code> line shows a UUID.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshell sandbox get idtest</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>A sandbox without its own Keycloak client gets no token.
+Keycloak finds no client for the sandbox&#8217;s SPIFFE ID and rejects the assertion, and the supervisor answers the agent&#8217;s request with HTTP 502 without forwarding it.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="4">
+<li>
+<p>Create the Keycloak client <code>sandbox-&lt;sandbox-id&gt;</code> for this sandbox as described in <a href="configure-keycloak.html#create-a-client-for-each-sandbox" class="xref page">Create a client for each sandbox</a>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="send-a-request-from-the-sandbox"><a class="anchor" href="#send-a-request-from-the-sandbox"></a>Send a request from the sandbox</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The request leaves the sandbox without a credential.
+The supervisor obtains the token and adds it before it forwards the request to Keycloak.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Call the <code>userinfo</code> endpoint from inside the sandbox.</p>
+<div class="paragraph">
+<p>Check: Keycloak answers with HTTP 200, and <code>preferred_username</code> is <code>service-account-sandbox-&lt;sandbox-id&gt;</code>, the service account user of the sandbox&#8217;s client.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshell sandbox exec --name idtest --no-tty -- curl -sS -i http://keycloak-service.keycloak.svc.cluster.local:8080/realms/openshell/protocol/openid-connect/userinfo</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Read the sandbox log.
+OpenShell names the network rule of an attached provider <code><em>provider</em></code> followed by the provider name.
+In that name, OpenShell lowercases ASCII letters, turns every character other than an ASCII letter, a digit, or <code><em></code> into <code></em></code>, and trims leading and trailing <code>_</code>, so <code>keycloak-token-grant</code> becomes <code>keycloak_token_grant</code>.</p>
+<div class="paragraph">
+<p>Check: an <code>HTTP:GET</code> event for <code>userinfo</code> shows <code>ALLOWED</code> and the tag <code>[policy:_provider_keycloak_token_grant engine:l7]</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshell logs idtest</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Read the environment of the sandbox.</p>
+<div class="paragraph">
+<p>Check: the environment holds no access token and no SPIFFE variable.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshell sandbox exec --name idtest --no-tty -- env</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check that the sandbox has no Workload API socket.
+The driver mounts the socket directory <code>/spiffe-workload-api</code> only into the supervisor container.</p>
+<div class="paragraph">
+<p>Check: the path does not exist, so <code>test</code> exits with status 1.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshell sandbox exec --name idtest --no-tty -- test -e /spiffe-workload-api</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Send the same <code>userinfo</code> request through the Keycloak Route from <a href="install-keycloak.html#expose-keycloak" class="xref page">Install Keycloak</a>, from outside the sandbox and without a token.</p>
+<div class="paragraph">
+<p>Check: the <code>userinfo</code> endpoint answers with HTTP status 401.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -sS -o /dev/null -w '%{http_code}' "https://&lt;keycloak-host&gt;/realms/openshell/protocol/openid-connect/userinfo"</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Only the supervisor adds the token, and the token stays out of the sandbox environment.
+<a href="protect-target-api.html" class="xref page">Protect the target API</a> describes what your own API must check in the token it receives.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="protect-target-api.html" class="query-params-link">Protect the target API</a></span>
+  <span class="next"><a href="../user/index.html" class="query-params-link">User overview</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script defer src="../../_/js/vendor/clipboard.js"></script>
+<script defer src="../../_/js/site.js"></script>
+<script defer src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
